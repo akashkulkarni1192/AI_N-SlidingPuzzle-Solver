@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="src/css/main.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="header clearfix">
+        <h2>Sliding Puzzle</h2>
+
+        <p><a href="#puzzleDescription" data-toggle="collapse" aria-expanded="false" aria-controls="puzzleDescription">Click
+            to Show/Hide description</a></p>
+        <hr class="separator"/>
+    </div>
+</div>
+<div class="puzzle-description collapse" id="puzzleDescription" aria-expanded="false">
+    <div class="container">
+        <p>This application finds the optimal solution to solve a 8 or
+            15-puzzle. By optimal solution, we mean a solution requiring the
+            minimum numbers of moves.</p>
+
+        <p>
+            Different algorithms are implemented : <a href="http://en.wikipedia.org/wiki/Breadth-first_search">Breadth
+            First Search</a>, <a href="http://en.wikipedia.org/wiki/A_star">A*</a>
+            or <a href="http://www.google.be/search?q=Iterative+deepening+A*">Iterative
+            Deepening A* (IDA*)</a>. You can use and compare these algorithms only
+            for the 8-puzzle. Indeed, only IDA* are able to resolve a 15-puzzle
+            relatively fast and without consuming too much memory.
+        </p>
+
+        <p>A* and IDA* algorithms use heuristic function to find the
+            optimal solution. Three heuristic functions are proposed : Manhattan
+            Distance, Linear Conflict and Database Pattern.</p>
+
+        <p>This web application is deployed on Google App Engine infrastructure (Frontend Instance Class F2 : 1200MHz,
+            256 MB). The algorithm has 60 seconds to solve the puzzle.</p>
+
+        <p>
+            The code is open-sourced and can be found <a
+                href="http://code.google.com/p/julien-labs/source/browse/#svn%2Ftrunk%2FSlidingPuzzle%2Fsrc%2Fbe%2Fdramaix%2Fai%2Fslidingpuzzle%2Fclient">here</a>
+        </p>
+
+        <p>
+            If you want to have more details about how I've implemented this web application, please read the <a
+                href="https://plus.google.com/u/0/103916508880440628637/posts/4vLG9oghrLy">following post</a>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-lg-6">
+            <div class="row">
+                <div class="col-xs-12" id="puzzleWrapper">
+                </div>
+            </div>
+            <div class="row collapse" id="hintWrapper" aria-expanded="false">
+                <div class="col-xs-12">
+                    <div class="hint-container">
+                        <h3 id="hintText"></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="puzzleControls" id="puzzleControls">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-lg-6">
+            <form name="puzzleForm" class="puzzleForm" id="puzzleForm">
+                <div class="form-group row">
+                    <label for="puzzleSize" class="col-lg-3 col-sm-3 col-xs-12 col-form-label">Puzzle Size:</label>
+
+                    <div class="col-xs-12 col-sm-9 col-lg-9">
+                        <input class="form-control" type="number" name="puzzleSize" id="puzzleSize" required>
+                        <small id="passwordHelpInline" class="text-muted">
+                            Must be a number within 1-10.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Algorithm Type:</label>
+
+                    <div class="col-sm-9">
+                        <p class="form-control-static">Iterative Deepening A* (IDA*)</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="heuristicType" class="col-sm-3 col-form-label">Heuristic type:</label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control" name="heuristicType" id="heuristicType">
+                            <option value="0">Manhattan Distance</option>
+                            <option value="1">Linear Conflict</option>
+                            <option value="2">Pattern Database</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary pull-right" id="submitForm">Submit</button>
+                <div class="clearfix"></div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="node_modules/systemjs/dist/system.js"></script>
+<script src="node_modules/typescript/lib/typescript.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+    System.config({
+        transpiler: 'typescript',
+        packages: {
+            src: {
+                defaultExtension: 'ts'
+            }
+        },
+        map: {
+            app: './src/scripts/app.ts'
+        }
+    });
+    System.import('./src/scripts/app.ts')
+            .then(null, console.error.bind(console));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "npuzzlegame",
+  "version": "1.0.0",
+  "description": "N-Puzzle game.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chintan Vyas",
+  "license": "MIT",
+  "devDependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
+    "systemjs": "^0.19.47",
+    "typescript": "^2.2.1"
+  }
+}
