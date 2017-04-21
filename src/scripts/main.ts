@@ -28,11 +28,10 @@ export class Main {
         var frontierList = [];
         var startState = this.createNode(this.puzzle, null);
         frontierList.push(startState);
-        var i = 0;
         while(frontierList.length){
-            ++i;
             var frontierState = this.popWithLeastCost(frontierList);
-            //console.log(i);
+            //console.log('Iter ' + p + ' frontier f = '+frontierState.f + ' g = '+frontierState.g + ' blank = '+frontierState.puzzleState.indexBlankTile);
+            console.log('cost : '+(frontierState.f+frontierState.g));
             if(this.isGoalState(frontierState)){
                // form path to play the result
                console.log('Goal reached blank' + JSON.stringify(frontierState.puzzleState));
@@ -92,7 +91,7 @@ export class Main {
 
     createNode(curPuzzle, prevPuzzle){
         var backwardCost = 0;
-        var forwardCost = this.calculateNoOfDifferentTiles(curPuzzle);
+        var forwardCost = this.calculateManhattanDistance(curPuzzle);
         if(prevPuzzle != null && prevPuzzle.f != undefined)
             backwardCost = prevPuzzle.f + 1;
         var node = {
@@ -131,5 +130,22 @@ export class Main {
             iterState = iterState.prevPuzzleNode;
         }
         return path;
+    }
+
+    calculateManhattanDistance(puzzle){
+      var manDistance = 0;
+      var rowDistance = 0;
+      var colDistance = 0;
+      var tileValue = 0;
+        for (var i = 0; i < puzzle.tiles.length ; i++){
+          tileValue = puzzle.tiles[i].value;
+          if(tileValue != -1){
+            rowDistance = Math.abs( ((tileValue-1)%3) - ((i)%3) );
+            colDistance = Math.abs( Math.floor((tileValue-1)/3) - Math.floor((i)/3) );
+            manDistance+=(rowDistance+colDistance);
+          }
+                
+        }
+        return manDistance;
     }
 }
