@@ -27,11 +27,12 @@ export class Main {
     public a_star_algorithm(){
         var frontierList = [];
         var startState = this.createNode(this.puzzle, null);
+
         frontierList.push(startState);
+        var startBlankTile = startState.puzzleState.indexBlankTile;
         while(frontierList.length){
             var frontierState = this.popWithLeastCost(frontierList);
             //console.log('Iter ' + p + ' frontier f = '+frontierState.f + ' g = '+frontierState.g + ' blank = '+frontierState.puzzleState.indexBlankTile);
-            console.log('cost : '+(frontierState.f+frontierState.g));
             if(this.isGoalState(frontierState)){
                // form path to play the result
                console.log('Goal reached blank' + JSON.stringify(frontierState.puzzleState));
@@ -39,15 +40,28 @@ export class Main {
                    console.log(' '+ frontierState.puzzleState.tiles[i].value);
 
                var finalPath = this.formFinalPath(frontierState);
+
+
                console.log('Total Steps : '+finalPath.length);
                for (var x= 0; x < finalPath.length; x++)
                    console.log(finalPath[x]);
+               this.playTheResult(finalPath, startBlankTile, frontierState.puzzleState);
                break;
             }
             var neighbourFrontierList = this.getNextFrontiers(frontierState);
             if( neighbourFrontierList.length > 0)
                 Array.prototype.push.apply(frontierList, neighbourFrontierList);
         }
+    }
+
+    public playTheResult(finalPath, startBlankTile, puzzle){
+       var blankTile = startBlankTile;
+       console.log('Playing The Result ');
+       for (var i = finalPath.length - 1; i >=0 ; i--){
+         console.log('Blank Tile moved from '+blankTile + ' to '+finalPath[i]);
+         //puzzle.swapTile(blankTile, finalPath[i]);
+         blankTile = finalPath[i];  
+       }
     }
     public getNextFrontiers(state){
        var nextFrontiers = [];
@@ -76,7 +90,7 @@ export class Main {
         var leastFrontierIndex = -1;
         var leastFrontier = null;
         for(var i=0 ; i < frontierList.length ; i++){
-            var frontier = frontierList[i];
+             var frontier = frontierList[i];
             if((frontier.f + frontier.g) < min){
                 min = frontier.f + frontier.g;
                 leastFrontierIndex = i;

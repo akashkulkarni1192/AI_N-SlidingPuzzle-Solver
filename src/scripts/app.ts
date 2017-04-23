@@ -64,9 +64,15 @@ function renderPuzzle(main) {
     };
     document.getElementById("makeRandom").onclick = function () {
         main.puzzle.makeRandom();
+        while(!isSolvable(main.puzzle)){
+            main.puzzle.makeRandom();
+        }
+        
     };
     document.getElementById("playResult").onclick = function () {
+        console.time('A_Start_Time');
         main.a_star_algorithm();
+        console.timeEnd('A_Start_Time');
     };
 
     var hintText = document.getElementById("hintText");
@@ -121,6 +127,34 @@ function bootstrapPuzzle() {
     }
 
 }
+
+function isSolvable(puzzle){
+      var inversionCount = 0;
+      var isSolvable = false;
+      for (var i = 0; i < puzzle.tiles.length ; i++){
+        if(puzzle.tiles[i].value == -1)
+          continue;
+        for (var j = i + 1; j < puzzle.tiles.length ; j++){
+          if(puzzle.tiles[j].value == -1)
+            continue;
+          if(puzzle.tiles[i].value > puzzle.tiles[j].value){
+            inversionCount++;
+          }
+        }
+      }
+      if(puzzle.size % 2 == 1){
+        if(inversionCount % 2 == 0){
+          isSolvable = true;
+        }
+      }
+      if(isSolvable){
+          console.log('Solvable');
+      }
+      else{
+          console.log('Not solvable');
+      }
+      return isSolvable;
+    }
 
 bootstrapPuzzle();
 
